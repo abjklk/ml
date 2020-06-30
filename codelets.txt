@@ -1,0 +1,27 @@
+#Getting graphs from keras and loading onto tensorboard
+
+from datetime import datetime
+logdir="logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+#call the callback in mode.fit
+
+
+#Saving Keras Model
+keras_mnist_model = 'mnist_model.h5'
+model.save(keras_mnist_model)
+
+#Loading Saved Keras Model
+new_model = tf.keras.models.load_model(keras_mnist_model)
+new_model.summary()
+
+
+#Converting Keras Model to TFlite 	TF-2.0
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+#Converting Keras Model to TFlite TF<2.0
+converter = tf.lite.TFLiteConverter.from_keras_model_file('mnist_model.h5')
+tflite_model = converter.convert()
+
+tflite_mnist_model = "mnist_model.tflite"
+open(tflite_mnist_model, "wb").write(tflite_model)
